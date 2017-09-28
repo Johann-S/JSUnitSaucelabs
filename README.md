@@ -1,31 +1,36 @@
 # JSUnitSaucelabs
 
-Allow you to run your unit test throw Saucelabs API without Grunt
+Allows you to run your unit tests through Sauce Labs API without Grunt.
 
 ## Install
 
-`npm install jsunitsaucelabs`
+```shell
+npm install jsunitsaucelabs
+```
 
 ## Methods
 
 ### JSUnitSaucelabs.prototype.start
 
-This method use `:username/js-tests` from Saucelabs API see : [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests)
+This method uses `:username/js-tests` from Sauce Labs API.
+See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests)
 
-  #### Parameters
-  - `platforms`: Array of platforms
-  - `url`: should point to the page that hosts your tests
-  - `framework`: which framework used for your tests (QUnit, Jasmine, ...)
-  - `callback`: function to handle error or success `callback(error, result)`
+#### Parameters
+
+- `platforms`: Array of platforms
+- `url`: should point to the page that hosts your tests
+- `framework`: the framework is used for your tests (QUnit, Jasmine, ...)
+- `callback`: function to handle error or success `callback(error, result)`
 
 ### JSUnitSaucelabs.prototype.getStatus
 
-This method use `:username/js-tests/status` from Saucelabs API see :
-[https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus)
+This method uses `:username/js-tests/status` from Sauce Labs API.
+See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus)
 
-  #### Parameters
-  - `taskIds`: Array of task ID returned by Saucelabs API
-  - `callback`: function to handle error or success `callback(error, result)`
+#### Parameters
+
+- `taskIds`: Array of task ID returned by Sauce Labs API
+- `callback`: function to handle error or success `callback(error, result)`
 
 ## How to use it with an example
 
@@ -45,9 +50,9 @@ jsUnitSaucelabs.start([
   if (typeof success !== undefined) {
     var taskIds = success['js tests']
     if (!taskIds || !taskIds.length) {
-      throw new Error('Error starting tests through SauceLabs API')
+      throw new Error('Error starting tests through Sauce Labs API')
     }
-    
+
     var waitingCallback = function (error, success) {
       if (error) {
         console.error(error)
@@ -72,7 +77,7 @@ jsUnitSaucelabs.start([
     }
 
     taskIds.forEach(function (id) {
-      jsUnitSaucelabs.getStatus(id, waitingCallback)      
+      jsUnitSaucelabs.getStatus(id, waitingCallback)
     })
   }
 })
