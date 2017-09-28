@@ -10,6 +10,21 @@ npm install jsunitsaucelabs
 
 ## Methods
 
+### Constructor
+
+JSUnitSaucelabs constructor can take those parameters :
+
+```javascript
+{
+  username:  null,
+  password:  null,
+  tunneled:  true,
+  build:     null,
+  hostname:  'saucelabs.com',
+  base:      '/rest/v1/'
+}
+```
+
 ### JSUnitSaucelabs.prototype.start
 
 This method uses `:username/js-tests` from Sauce Labs API.
@@ -31,6 +46,10 @@ See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#Jav
 
 - `taskIds`: Array of task ID returned by Sauce Labs API
 - `callback`: function to handle error or success `callback(error, result)`
+
+### JSUnitSaucelabs.prototype.stop
+
+Allow you to cut the tunnel behind you and Saucelabs
 
 ## How to use it with an example
 
