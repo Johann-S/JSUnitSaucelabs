@@ -1,5 +1,8 @@
 # JSUnitSaucelabs
 
+[![npm version](https://img.shields.io/npm/v/jsunitsaucelabs.svg)](https://www.npmjs.com/package/jsunitsaucelabs)
+[![dependencies Status](https://david-dm.org/Johann-S/JSUnitSaucelabs/status.svg)](https://david-dm.org/Johann-S/JSUnitSaucelabs)
+
 Allows you to run your unit tests through Sauce Labs API without Grunt.
 
 ## Install
@@ -12,7 +15,7 @@ npm install jsunitsaucelabs
 
 ### Constructor
 
-JSUnitSaucelabs constructor can take those parameters :
+JSUnitSaucelabs constructor accepts the following parameters :
 
 ```javascript
 {
@@ -49,7 +52,7 @@ See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#Jav
 
 ### JSUnitSaucelabs.prototype.stop
 
-Allow you to cut the tunnel behind you and Saucelabs
+Allows you to cut the tunnel between you and Sauce labs
 
 ## How to use it with an example
 
