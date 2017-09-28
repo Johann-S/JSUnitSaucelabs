@@ -2,7 +2,28 @@
 
 Allow you to run your unit test throw Saucelabs API without Grunt
 
-# How to use it with an example
+## Methods
+
+### JSUnitSaucelabs.prototype.start
+
+This method use `:username/js-tests` from Saucelabs API see : [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests)
+
+  #### Parameters
+  - `platforms`: Array of platforms
+  - `url`: should point to the page that hosts your tests
+  - `framework`: which framework used for your tests (QUnit, Jasmine, ...)
+  - `callback`: function to handle error or success `callback(error, result)`
+
+### JSUnitSaucelabs.prototype.getStatus
+
+This method use `:username/js-tests/status` from Saucelabs API see :
+[https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus)
+
+  #### Parameters
+  - `taskIds`: Array of task ID returned by Saucelabs API
+  - `callback`: function to handle error or success `callback(error, result)`
+
+## How to use it with an example
 
 ```javascript
 const JSUnitSaucelabs = require('./jsUnitSaucelabs')
@@ -51,3 +72,4 @@ jsUnitSaucelabs.start([
     })
   }
 })
+```

@@ -1,12 +1,20 @@
 {
-  "name": "saucelabs-unit-test",
+  "name": "jsunitsaucelabs",
   "version": "1.0.0",
+  "homepage": "https://github.com/Johann-S/JSUnitSaucelabs",
   "description": "Allow you to run your unit test throw Saucelabs without Grunt",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Johann-S/JSUnitSaucelabs.git"
+  },
   "main": "jsUnitSaucelabs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["saucelabs", "unit test", "js"],
-  "author": "Johann-S",
+  "engines": {
+    "node": "*"
+  },
+  "keywords": ["saucelabs", "saucelabs-api", "unit-testing", "javasript", "nodejs"],
+  "author": "Johann-S <johann.servoire@gmail.com>",
   "license": "MIT"
 }
