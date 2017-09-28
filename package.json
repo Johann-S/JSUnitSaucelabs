@@ -14,7 +14,16 @@
   "engines": {
     "node": "*"
   },
-  "keywords": ["saucelabs", "saucelabs-api", "unit-testing", "javasript", "nodejs"],
+  "keywords": [
+    "saucelabs",
+    "saucelabs-api",
+    "unit-testing",
+    "javasript",
+    "nodejs"
+  ],
   "author": "Johann-S <johann.servoire@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "sauce-tunnel": "^2.5.0"
+  }
 }

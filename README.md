@@ -30,7 +30,7 @@ This method use `:username/js-tests/status` from Saucelabs API see :
 ## How to use it with an example
 
 ```javascript
-const JSUnitSaucelabs = require('./jsUnitSaucelabs')
+var JSUnitSaucelabs = require('jsunitsaucelabs')
 
 var jsUnitSaucelabs = new JSUnitSaucelabs({
   username: 'your-saucelabs-username',

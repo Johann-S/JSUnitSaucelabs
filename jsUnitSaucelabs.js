@@ -1,8 +1,11 @@
 var https = require('https')
+var SauceTunnel = require('sauce-tunnel')
 
 var DEFAULTS = {
   username:  null,
   password:  null,
+  tunneled:  true,
+  build:     null,
   hostname:  'saucelabs.com',
   base:      '/rest/v1/'
 }
@@ -85,6 +88,11 @@ function request(config, callback) {
 function JSUnitSaucelabs(options) {
   this.options = extend({}, DEFAULTS, options)
   this.options.auth = this.options.username + ':' + this.options.password
+  this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
+  this.tunnel = false
+  if (this.options.tunneled) {
+    this.tunnel = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
+  }
 }
 
 // related to : https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests
@@ -94,17 +102,45 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
   }
 
   var path = this.options.base + replace(':username/js-tests', extend({}, this.options))
-  request({
-    method: 'POST',
-    host: this.options.hostname,
-    path: path,
-    auth: this.options.auth,
-    data: {
-      platforms: platforms,
-      url: url,
-      framework: framework
-    }
-  }, callback)
+  if (tunnel) {
+    tunnel.start(function (tunnelStatus) {
+      if (tunnelStatus) {
+        console.log('Tunnel created to SauceLabs')
+
+        var requestParams = {
+          method: 'POST',
+          host: this.options.hostname,
+          path: path,
+          auth: this.options.auth,
+          data: {
+            platforms: platforms,
+            url: url,
+            framework: framework,
+            'tunnel-identifier': this.identifier
+          }
+        }
+        if (this.options.build) {
+          requestParams.data.build = this.options.buid
+        }
+        request(requestParams, callback)
+      } else {
+        throw new Error('Could not create tunnel to SauceLabs')
+      }
+    })
+
+  } else {
+    request({
+      method: 'POST',
+      host: this.options.hostname,
+      path: path,
+      auth: this.options.auth,
+      data: {
+        platforms: platforms,
+        url: url,
+        framework: framework
+      }
+    }, callback)
+  }
 }
 
 JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
@@ -122,6 +158,14 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
       'js tests': taskIds
     }
   }, callback)
+}
+
+JSUnitSaucelabs.prototype.stop = function () {
+  if (this.tunnel) {
+    tunnel.stop(function () {
+      console.log('Tunnel closed')
+    })
+  }
 }
 
 module.exports = JSUnitSaucelabs
