@@ -1,0 +1,12 @@
+{
+  "name": "saucelabs-unit-test",
+  "version": "1.0.0",
+  "description": "Allow you to run your unit test throw Saucelabs without Grunt",
+  "main": "jsUnitSaucelabs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["saucelabs", "unit test", "js"],
+  "author": "Johann-S",
+  "license": "MIT"
+}
