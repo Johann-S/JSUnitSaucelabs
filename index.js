@@ -108,25 +108,26 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
   }
 
   var path = this.options.base + replace(':username/js-tests', extend({}, this.options))
-  if (tunnel) {
-    tunnel.start(function (tunnelStatus) {
+  if (this.tunnel) {
+    var that = this
+    this.tunnel.start(function (tunnelStatus) {
       if (tunnelStatus) {
         console.log('Tunnel created to SauceLabs')
 
         var requestParams = {
           method: 'POST',
-          host: this.options.hostname,
+          host: that.options.hostname,
           path: path,
-          auth: this.options.auth,
+          auth: that.options.auth,
           data: {
             platforms: platforms,
             url: url,
             framework: framework,
-            'tunnel-identifier': this.identifier
+            'tunnel-identifier': that.identifier
           }
         }
-        if (this.options.build) {
-          requestParams.data.build = this.options.buid
+        if (that.options.build) {
+          requestParams.data.build = that.options.build
         }
         request(requestParams, callback)
       } else {
@@ -168,7 +169,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
 
 JSUnitSaucelabs.prototype.stop = function () {
   if (this.tunnel) {
-    tunnel.stop(function () {
+    this.tunnel.stop(function () {
       console.log('Tunnel closed')
     })
   }
