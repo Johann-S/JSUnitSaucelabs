@@ -2,6 +2,10 @@
 
 Allow you to run your unit test throw Saucelabs API without Grunt
 
+## Install
+
+`npm install jsunitsaucelabs`
+
 ## Methods
 
 ### JSUnitSaucelabs.prototype.start
