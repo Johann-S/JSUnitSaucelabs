@@ -1,3 +1,5 @@
+'use strict'
+
 var https = require('https')
 var SauceTunnel = require('sauce-tunnel')
 
@@ -12,21 +14,25 @@ var DEFAULTS = {
 
 function extend(obj) {
   Array.prototype.slice.call(arguments, 1).forEach(function (props) {
-    var prop;
+    var prop
     for (prop in props) {
-      obj[prop] = props[prop]
+      if (Object.prototype.hasOwnProperty.call(props, prop)) {
+        obj[prop] = props[prop]
+      }
     }
   })
   return obj
 }
 
 function replace (str, values) {
-  var name  = null
+  var name = null
   var value = null
 
   for (name in values) {
-    value = values[name]
-    str = str.replace(new RegExp(':' + name, 'g'), value)
+    if (Object.prototype.hasOwnProperty.call(values, name)) {
+      value = values[name]
+      str = str.replace(new RegExp(':' + name, 'g'), value)
+    }
   }
   return str
 }
@@ -52,8 +58,8 @@ function request(config, callback) {
     var result = ''
     if (callback) {
       response.on('data', function (chunk) {
-          result += chunk
-        })
+        result += chunk
+      })
         .on('end', function () {
           var res = null
           try {

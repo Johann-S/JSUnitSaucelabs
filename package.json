@@ -12,12 +12,12 @@
   "bugs": {
     "url": "https://github.com/Johann-S/JSUnitSaucelabs/issues"
   },
-  "main": "jsUnitSaucelabs.js",
+  "main": "index.js",
   "engines": {
     "node": ">=4"
   },
   "files": [
-    "jsUnitSaucelabs.js"
+    "index.js"
   ],
   "keywords": [
     "saucelabs",
