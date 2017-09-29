@@ -1,6 +1,7 @@
 'use strict'
 
-var https = require('https')
+var https       = require('https')
+var emitter     = require('events').EventEmitter
 var SauceTunnel = require('sauce-tunnel')
 
 var DEFAULTS = {
@@ -10,6 +11,10 @@ var DEFAULTS = {
   build:     null,
   hostname:  'saucelabs.com',
   base:      '/rest/v1/'
+}
+
+var EVENTS = {
+  TUNNEL_CREATED: 'tunnelCreated'
 }
 
 function extend(obj) {
@@ -92,12 +97,29 @@ function request(config, callback) {
  */
 
 function JSUnitSaucelabs(options) {
-  this.options = extend({}, DEFAULTS, options)
-  this.options.auth = this.options.username + ':' + this.options.password
-  this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
-  this.tunnel = false
+  this.options       = extend({}, DEFAULTS, options)
+  this.options.auth  = this.options.username + ':' + this.options.password
+  this.identifier    = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
+  this.tunnel        = false
+  this.tunnelStarted = false
+}
+
+// inherits from EventEmitter
+JSUnitSaucelabs.prototype = Object.create(emitter.prototype)
+
+JSUnitSaucelabs.prototype.initTunnel = function () {
   if (this.options.tunneled) {
     this.tunnel = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
+    var that = this
+    this.tunnel.start(function (tunnelStatus) {
+      if (tunnelStatus) {
+        that.tunnelStarted = true
+        that.emit(EVENTS.TUNNEL_CREATED)
+        console.log('Tunnel created to SauceLabs \n')
+      } else {
+        throw new Error('Could not create tunnel to Sauce Labs')
+      }
+    })
   }
 }
 
@@ -108,46 +130,29 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
   }
 
   var path = this.options.base + replace(':username/js-tests', extend({}, this.options))
-  if (this.tunnel) {
-    var that = this
-    this.tunnel.start(function (tunnelStatus) {
-      if (tunnelStatus) {
-        console.log('Tunnel created to SauceLabs')
-
-        var requestParams = {
-          method: 'POST',
-          host: that.options.hostname,
-          path: path,
-          auth: that.options.auth,
-          data: {
-            platforms: platforms,
-            url: url,
-            framework: framework,
-            'tunnel-identifier': that.identifier
-          }
-        }
-        if (that.options.build) {
-          requestParams.data.build = that.options.build
-        }
-        request(requestParams, callback)
-      } else {
-        throw new Error('Could not create tunnel to SauceLabs')
-      }
-    })
-
-  } else {
-    request({
-      method: 'POST',
-      host: this.options.hostname,
-      path: path,
-      auth: this.options.auth,
-      data: {
-        platforms: platforms,
-        url: url,
-        framework: framework
-      }
-    }, callback)
+  var requestParams = {
+    method: 'POST',
+    host: this.options.hostname,
+    path: path,
+    auth: this.options.auth,
+    data: {
+      platforms: platforms,
+      url: url,
+      framework: framework,
+    }
   }
+  if (this.options.build) {
+    requestParams.data.build = this.options.build
+  }
+
+  if (this.tunnel && this.tunnelStarted) {
+    requestParams.data['tunnel-identifier'] = this.identifier
+  } else if (this.tunnel && !this.tunnelStarted) {
+    // not ready
+    console.warn('Not ready to start, please listen to ' + EVENTS.TUNNEL_CREATED + ' events')
+    return
+  }
+  request(requestParams, callback)
 }
 
 JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
@@ -168,7 +173,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
 }
 
 JSUnitSaucelabs.prototype.stop = function () {
-  if (this.tunnel) {
+  if (this.tunnel && this.tunnelStarted) {
     this.tunnel.stop(function () {
       console.log('Tunnel closed')
     })
