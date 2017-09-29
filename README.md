@@ -15,7 +15,7 @@ npm install jsunitsaucelabs
 
 ### Constructor
 
-JSUnitSaucelabs constructor accepts the following parameters :
+JSUnitSaucelabs constructor accepts the following parameters (you see the default values) :
 
 ```javascript
 {
@@ -28,6 +28,13 @@ JSUnitSaucelabs constructor accepts the following parameters :
 }
 ```
 
+### JSUnitSaucelabs.prototype.initTunnel
+
+This method allow you to initialise a tunnel between you and Sauce Labs, when this tunnel
+started, JSUnitSaucelabs will emit `tunnelCreated` event
+
+> JSUnitSaucelabs inherit from `EventEmitter`
+
 ### JSUnitSaucelabs.prototype.start
 
 This method uses `:username/js-tests` from Sauce Labs API.
@@ -39,6 +46,9 @@ See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#Jav
 - `url`: should point to the page that hosts your tests
 - `framework`: the framework is used for your tests (QUnit, Jasmine, ...)
 - `callback`: function to handle error or success `callback(error, result)`
+
+> If you use a tunnel between Sauce Labs and you, you shouldn't call start before the connection
+is established (see `initTunnel` method)
 
 ### JSUnitSaucelabs.prototype.getStatus
 
@@ -65,42 +75,46 @@ var jsUnitSaucelabs = new JSUnitSaucelabs({
 })
 
 var testURL = 'http://localhost/index.html?hidepassed'
-jsUnitSaucelabs.start([
-  ['Windows 8', 'internet explorer', '10']/*,
-  ['OS X 10.8', 'safari', '6']*/
-], testURL, 'qunit', function (error, success) {
-  if (typeof success !== undefined) {
-    var taskIds = success['js tests']
-    if (!taskIds || !taskIds.length) {
-      throw new Error('Error starting tests through Sauce Labs API')
-    }
 
-    var waitingCallback = function (error, success) {
-      if (error) {
-        console.error(error)
-        return
+jsUnitSaucelabs.on('tunnelCreated', function () {
+  jsUnitSaucelabs.start([
+    ['Windows 8', 'internet explorer', '10']/*,
+    ['OS X 10.8', 'safari', '6']*/
+  ], testURL, 'qunit', function (error, success) {
+    if (typeof success !== undefined) {
+      var taskIds = success['js tests']
+      if (!taskIds || !taskIds.length) {
+        throw new Error('Error starting tests through Sauce Labs API')
       }
 
-      if (typeof success !== 'undefined') {
-        if (!success.completed) {
-          jsUnitSaucelabs.getStatus(taskIds[0], waitingCallback)
-        } else {
-          var test = success['js tests'][0]
-          var passed = false
-          if (test.result !== null) {
-            passed = test.result.total === test.result.passed
+      var waitingCallback = function (error, success) {
+        if (error) {
+          console.error(error)
+          return
+        }
+
+        if (typeof success !== 'undefined') {
+          if (!success.completed) {
+            jsUnitSaucelabs.getStatus(taskIds[0], waitingCallback)
+          } else {
+            var test = success['js tests'][0]
+            var passed = false
+            if (test.result !== null) {
+              passed = test.result.total === test.result.passed
+            }
+            console.log('Tested ' + testURL)
+            console.log('Platform: ' + test.platform.join(','))
+            console.log('Passed: ' + passed.toString())
+            console.log('Url ' + test.url)
           }
-          console.log('Tested ' + testURL)
-          console.log('Platform: ' + test.platform.join(','))
-          console.log('Passed: ' + passed.toString())
-          console.log('Url ' + test.url)
         }
       }
-    }
 
-    taskIds.forEach(function (id) {
-      jsUnitSaucelabs.getStatus(id, waitingCallback)
-    })
-  }
+      taskIds.forEach(function (id) {
+        jsUnitSaucelabs.getStatus(id, waitingCallback)
+      })
+    }
+  })
 })
+jsUnitSaucelabs.initTunnel()
 ```
