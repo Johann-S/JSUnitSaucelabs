@@ -115,7 +115,7 @@ JSUnitSaucelabs.prototype.initTunnel = function () {
       if (tunnelStatus) {
         that.tunnelStarted = true
         that.emit(EVENTS.TUNNEL_CREATED)
-        console.log('Tunnel created to SauceLabs \n')
+        console.log('Tunnel created to Sauce Labs\n')
       } else {
         throw new Error('Could not create tunnel to Sauce Labs')
       }
