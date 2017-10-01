@@ -15,36 +15,36 @@ npm install jsunitsaucelabs
 
 ### Constructor
 
-JSUnitSaucelabs constructor accepts the following parameters (you see the default values) :
+JSUnitSaucelabs constructor accepts the following parameters (the following are the default values):
 
-```javascript
+```js
 {
-  username:  null,
-  password:  null,
-  tunneled:  true,
-  build:     null,
-  hostname:  'saucelabs.com',
-  base:      '/rest/v1/'
+  username: null,
+  password: null,
+  tunneled: true,
+  build:    null,
+  hostname: 'saucelabs.com',
+  base:     '/rest/v1/'
 }
 ```
 
 ### JSUnitSaucelabs.prototype.initTunnel
 
-This method allow you to initialise a tunnel between you and Sauce Labs, when this tunnel
-started, JSUnitSaucelabs will emit `tunnelCreated` event
+This method allows you to initialise a tunnel between you and Sauce Labs, when this tunnel is started,
+JSUnitSaucelabs will emit `tunnelCreated` event
 
 > JSUnitSaucelabs inherit from `EventEmitter`
 
 ### JSUnitSaucelabs.prototype.start
 
 This method uses `:username/js-tests` from Sauce Labs API.
-See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests)
+See [here](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests).
 
 #### Parameters
 
 - `platforms`: Array of platforms
 - `url`: should point to the page that hosts your tests
-- `framework`: the framework is used for your tests (QUnit, Jasmine, ...)
+- `framework`: the framework used for your tests (QUnit, Jasmine, ...)
 - `callback`: function to handle error or success `callback(error, result)`
 
 > If you use a tunnel between Sauce Labs and you, you shouldn't call start before the connection
@@ -53,20 +53,20 @@ is established (see `initTunnel` method)
 ### JSUnitSaucelabs.prototype.getStatus
 
 This method uses `:username/js-tests/status` from Sauce Labs API.
-See [https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus)
+See [here](https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-GetJSUnitTestStatus).
 
 #### Parameters
 
-- `taskIds`: Array of task ID returned by Sauce Labs API
+- `taskIds`: Array of task IDs returned by Sauce Labs API
 - `callback`: function to handle error or success `callback(error, result)`
 
 ### JSUnitSaucelabs.prototype.stop
 
-Allows you to cut the tunnel between you and Sauce labs
+Allows you to stop the tunnel between you and Sauce Labs
 
-## How to use it with an example
+## Usage Example
 
-```javascript
+```js
 var JSUnitSaucelabs = require('jsunitsaucelabs')
 
 var jsUnitSaucelabs = new JSUnitSaucelabs({
@@ -116,5 +116,6 @@ jsUnitSaucelabs.on('tunnelCreated', function () {
     }
   })
 })
+
 jsUnitSaucelabs.initTunnel()
 ```
