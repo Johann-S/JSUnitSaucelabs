@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/jsunitsaucelabs.svg)](https://www.npmjs.com/package/jsunitsaucelabs)
 [![dependencies Status](https://david-dm.org/Johann-S/JSUnitSaucelabs/status.svg)](https://david-dm.org/Johann-S/JSUnitSaucelabs)
+[![Build Status](https://travis-ci.org/Johann-S/JSUnitSaucelabs.svg?branch=master)](https://travis-ci.org/Johann-S/JSUnitSaucelabs)
 
 Allows you to run your unit tests through Sauce Labs API without Grunt.
 
