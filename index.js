@@ -99,7 +99,7 @@ function request(config, callback) {
 function JSUnitSaucelabs(options) {
   this.options       = extend({}, DEFAULTS, options)
   this.options.auth  = this.options.username + ':' + this.options.password
-  this.identifier    = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
+  this.identifier    = null
   this.tunnel        = false
   this.tunnelStarted = false
 }
@@ -109,8 +109,10 @@ JSUnitSaucelabs.prototype = Object.create(emitter.prototype)
 
 JSUnitSaucelabs.prototype.initTunnel = function () {
   if (this.options.tunneled) {
-    this.tunnel = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
-    var that = this
+    this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
+    this.tunnel     = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
+    var that        = this
+
     this.tunnel.start(function (tunnelStatus) {
       if (tunnelStatus) {
         that.tunnelStarted = true
