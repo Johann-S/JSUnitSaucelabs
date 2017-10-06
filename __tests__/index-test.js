@@ -1,4 +1,4 @@
-var JSUnitSaucelabs = require('../index')
+var JSUnitSaucelabs = require('../src/index')
 
 test('allow to pass object in constructor', function () {
   var jsUnitSL = new JSUnitSaucelabs({
