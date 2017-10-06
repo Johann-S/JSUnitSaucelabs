@@ -35,7 +35,7 @@ var Util = {
     return Object.prototype.toString.call(obj) === '[object Array]'
   },
 
-  request: function (config, callback) {
+  request: function (config, callback, verbose, verboseMode) {
     var body = JSON.stringify(config.data)
     var requestConfig = {
       method: config.method,
@@ -55,25 +55,29 @@ var Util = {
         response.on('data', function (chunk) {
           result += chunk
         })
-          .on('end', function () {
-            var res = null
-            try {
-              res = JSON.parse(result)
-            } catch (e) {
-              callback('Could not parse response: ' + result)
-              return
-            }
+        .on('end', function () {
+          var res = null
+          try {
+            res = JSON.parse(result)
+          } catch (e) {
+            callback('Could not parse response: ' + result)
+            return
+          }
 
-            if (response.statusCode === codeRequestSuccess) {
-              callback(null, res)
-            } else {
-              callback(res)
-            }
-          })
+          if (response.statusCode === codeRequestSuccess) {
+            callback(null, res)
+          } else {
+            callback(res)
+          }
+        })
       }
     })
     .on('error', function (err) {
-      callback('Could not send request: ' + err.message)
+      if (callback) {
+        callback('Could not send request: ' + err.message)
+      } else if (verbose) {
+        Util.logWarn('Could not send request: ' + err.message, verboseMode)
+      }
     })
 
     request.write(body)

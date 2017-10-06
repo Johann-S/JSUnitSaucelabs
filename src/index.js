@@ -42,6 +42,9 @@ JSUnitSaucelabs.prototype.initTunnel = function () {
     this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
     this.tunnel     = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
     var that        = this
+    if (this.options.verbose) {
+      Util.logDebug('Tunnel identifier : ' + this.identifier, this.options.verboseMode)
+    }
 
     this.tunnel.start(function (tunnelStatus) {
       if (tunnelStatus) {
@@ -91,8 +94,9 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
 
   if (this.options.verbose) {
     Util.logInfo('Launch unit test(s) on ' + url + ' with ' + framework, this.options.verboseMode)
+    Util.logDebug('method : ' + requestParams.method + ', host : ' + requestParams.host + ', path : ' + requestParams.path, this.options.verboseMode)
   }
-  Util.request(requestParams, callback)
+  Util.request(requestParams, callback, this.options.verbose, this.options.verboseMode)
 }
 
 JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
@@ -112,7 +116,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
     data: {
       'js tests': taskIds
     }
-  }, callback)
+  }, callback, this.options.verbose, this.options.verboseMode)
 }
 
 JSUnitSaucelabs.prototype.stop = function () {
