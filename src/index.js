@@ -38,6 +38,7 @@ JSUnitSaucelabs.prototype = Object.create(emitter.prototype)
 
 JSUnitSaucelabs.prototype.initTunnel = function () {
   if (this.options.tunneled) {
+    // eslint-disable-next-line
     this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
     this.tunnel     = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
     var that        = this
@@ -71,7 +72,7 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
     data: {
       platforms: platforms,
       url: url,
-      framework: framework,
+      framework: framework
     }
   }
   if (this.options.build) {
@@ -116,6 +117,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
 
 JSUnitSaucelabs.prototype.stop = function () {
   if (this.tunnel && this.tunnelStarted) {
+    var that = this
     this.tunnel.stop(function () {
       if (that.options.verbose) {
         Util.logInfo('Tunnel closed', that.options.verboseMode)

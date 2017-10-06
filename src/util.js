@@ -21,7 +21,7 @@ var Util = {
   replace: function (str, values) {
     var name = null
     var value = null
-  
+
     for (name in values) {
       if (Object.prototype.hasOwnProperty.call(values, name)) {
         value = values[name]
@@ -43,11 +43,12 @@ var Util = {
       path: config.path,
       auth: config.auth,
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     }
 
+    var codeRequestSuccess = 200
     var request = https.request(requestConfig, function (response) {
       var result = ''
       if (callback) {
@@ -62,8 +63,8 @@ var Util = {
               callback('Could not parse response: ' + result)
               return
             }
-  
-            if (response.statusCode === 200) {
+
+            if (response.statusCode === codeRequestSuccess) {
               callback(null, res)
             } else {
               callback(res)
@@ -74,7 +75,7 @@ var Util = {
     .on('error', function (err) {
       callback('Could not send request: ' + err.message)
     })
-  
+
     request.write(body)
     request.end()
   },
@@ -88,13 +89,13 @@ var Util = {
   logWarn: function (str, mode) {
     if (mode === null || mode === 'warn' || mode === 'debug') {
       console.warn(moduleTag + warnTag + str)
-    }   
+    }
   },
 
   logDebug: function (str, mode) {
     if (mode === 'debug') {
       console.warn(moduleTag + debugTag + str)
-    }   
+    }
   }
 }
 

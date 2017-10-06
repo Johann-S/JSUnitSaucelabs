@@ -28,13 +28,14 @@
     "nodejs"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "eslint src/*.js && jest"
   },
   "dependencies": {
     "colors": "^1.1.2",
     "sauce-tunnel": "^2.5.0"
   },
   "devDependencies": {
+    "eslint": "^4.8.0",
     "jest": "^21.2.1"
   }
 }
