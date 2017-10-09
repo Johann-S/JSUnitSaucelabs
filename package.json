@@ -18,7 +18,8 @@
   },
   "files": [
     "src/index.js",
-    "src/util.js"
+    "src/util.js",
+    "src/logger.js"
   ],
   "keywords": [
     "saucelabs",

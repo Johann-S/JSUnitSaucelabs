@@ -3,6 +3,7 @@
 var emitter     = require('events').EventEmitter
 var SauceTunnel = require('sauce-tunnel')
 var Util        = require('./util')
+var Logger      = require('./logger')
 
 var DEFAULTS = {
   username:    null,
@@ -31,6 +32,7 @@ function JSUnitSaucelabs(options) {
   this.identifier    = null
   this.tunnel        = false
   this.tunnelStarted = false
+  this.logger        = new Logger(this.options.verbose, this.options.verboseMode)
 }
 
 // inherits from EventEmitter
@@ -43,14 +45,14 @@ JSUnitSaucelabs.prototype.initTunnel = function () {
     this.tunnel     = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
     var that        = this
     if (this.options.verbose) {
-      Util.logDebug('Tunnel identifier : ' + this.identifier, this.options.verboseMode)
+      this.logger.debug('Tunnel identifier : ' + this.identifier)
     }
 
     this.tunnel.start(function (tunnelStatus) {
       if (tunnelStatus) {
         that.tunnelStarted = true
         if (that.options.verbose) {
-          Util.logInfo('Tunnel created to Sauce Labs\n', that.options.verboseMode)
+          that.logger.info('Tunnel created to Sauce Labs\n')
         }
         that.emit(EVENTS.TUNNEL_CREATED)
       } else {
@@ -88,14 +90,14 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
   } else if (this.tunnel && !this.tunnelStarted) {
     // not ready
     if (this.options.verbose) {
-      Util.logWarn('Not ready to start, please listen to "' + EVENTS.TUNNEL_CREATED + '" events', this.options.verboseMode)
+      this.logger.warn('Not ready to start, please listen to "' + EVENTS.TUNNEL_CREATED + '" events')
     }
     return
   }
 
   if (this.options.verbose) {
-    Util.logInfo('Launch unit test(s) on ' + url + ' with ' + framework, this.options.verboseMode)
-    Util.logDebug('method : ' + requestParams.method + ', host : ' + requestParams.host + ', path : ' + requestParams.path, this.options.verboseMode)
+    this.logger.info('Launch unit test(s) on ' + url + ' with ' + framework)
+    this.logger.debug('method : ' + requestParams.method + ', host : ' + requestParams.host + ', path : ' + requestParams.path)
   }
   Util.request(requestParams, callback, this.options.verbose, this.options.verboseMode)
 }
@@ -106,7 +108,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
   }
 
   if (this.options.verbose) {
-    Util.logDebug('getStatus on : "' + taskIds.join(',') + '"', this.options.verboseMode)
+    this.logger.debug('getStatus on : "' + taskIds.join(',') + '"')
   }
   var path = this.options.base + Util.replace(':username/js-tests/status', Util.extend({}, this.options))
   Util.request({
@@ -125,7 +127,7 @@ JSUnitSaucelabs.prototype.stop = function () {
     var that = this
     this.tunnel.stop(function () {
       if (that.options.verbose) {
-        Util.logInfo('Tunnel closed', that.options.verboseMode)
+        that.logger.info('Tunnel closed')
       }
     })
   }

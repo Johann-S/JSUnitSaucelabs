@@ -1,9 +1,6 @@
-var https     = require('https')
-var colors    = require('colors/safe')
-var moduleTag = colors.gray('JSUnitSaucelabs - ')
-var infoTag   = colors.cyan('[Info] ')
-var warnTag   = colors.yellow('[Warn] ')
-var debugTag  = colors.green('[Debug] ')
+'use strict'
+
+var https = require('https')
 
 var Util = {
   extend: function (obj) {
@@ -82,24 +79,6 @@ var Util = {
 
     request.write(body)
     request.end()
-  },
-
-  logInfo: function (str, mode) {
-    if (mode === null || mode === 'info' || mode === 'debug') {
-      console.log(moduleTag + infoTag + str)
-    }
-  },
-
-  logWarn: function (str, mode) {
-    if (mode === null || mode === 'warn' || mode === 'debug') {
-      console.warn(moduleTag + warnTag + str)
-    }
-  },
-
-  logDebug: function (str, mode) {
-    if (mode === 'debug') {
-      console.warn(moduleTag + debugTag + str)
-    }
   },
 
   formatArray: function (arr) {
