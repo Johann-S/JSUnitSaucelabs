@@ -9,7 +9,7 @@ Allows you to run your unit tests through Sauce Labs API without Grunt.
 ## Install
 
 ```shell
-npm install jsunitsaucelabs
+npm install jsunitsaucelabs --save-dev
 ```
 
 ## Methods
@@ -122,3 +122,7 @@ jsUnitSaucelabs.on('tunnelCreated', function () {
 
 jsUnitSaucelabs.initTunnel()
 ```
+
+## License
+
+[MIT](https://github.com/Johann-S/JSUnitSaucelabs/blob/master/LICENSE)
