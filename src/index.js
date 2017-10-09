@@ -63,8 +63,9 @@ JSUnitSaucelabs.prototype.initTunnel = function () {
 // related to : https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests
 JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback) {
   if (!Util.isArray(platforms)) {
-    platforms = [platforms]
+    return
   }
+  platforms = Util.formatArray(platforms)
 
   var path = this.options.base + Util.replace(':username/js-tests', Util.extend({}, this.options))
   var requestParams = {

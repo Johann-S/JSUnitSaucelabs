@@ -100,6 +100,17 @@ var Util = {
     if (mode === 'debug') {
       console.warn(moduleTag + debugTag + str)
     }
+  },
+
+  formatArray: function (arr) {
+    if (!Util.isArray(arr) || Util.isArray(arr) && arr.length === 0) {
+      throw new Error('Empty array or not an array')
+    }
+
+    if (!Util.isArray(arr[0])) {
+      arr = [arr]
+    }
+    return arr
   }
 }
 
