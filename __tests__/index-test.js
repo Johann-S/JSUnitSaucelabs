@@ -39,3 +39,28 @@ test('Util.formatArray should format correctly input array', function () {
   }
   expect(testBadFormats2).toThrowError('Empty array or not an array')
 })
+
+test('Allow to create tunnel on SauceLabs', function (done) {
+  var successFunction = function () {
+    expect(true).toBe(true)
+    done()
+  }
+
+  // only run this test on Travis
+  if (typeof process.env.TRAVIS_JOB_ID === 'undefined') {
+    successFunction()
+    return
+  }
+
+  var jsUnitSL = new JSUnitSaucelabs({
+    username: process.env.SAUCE_USERNAME,
+    password: process.env.SAUCE_ACCESS_KEY,
+    build: process.env.TRAVIS_JOB_ID
+  })
+
+  jsUnitSL.on('tunnelCreated', function () {
+    successFunction()
+    jsUnitSL.stop()
+  })
+  jsUnitSL.initTunnel()
+}, 25000)
