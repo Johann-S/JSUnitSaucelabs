@@ -1,6 +1,6 @@
 {
   "name": "jsunitsaucelabs",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "author": "Johann-S <johann.servoire@gmail.com>",
   "homepage": "https://github.com/Johann-S/JSUnitSaucelabs",
   "description": "Allows you to run your unit test through Sauce Labs without Grunt",
