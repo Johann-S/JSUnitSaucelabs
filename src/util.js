@@ -1,12 +1,11 @@
 'use strict'
 
-var https = require('https')
+const https = require('https')
 
-var Util = {
+const Util = {
   extend: function (obj) {
     Array.prototype.slice.call(arguments, 1).forEach(function (props) {
-      var prop
-      for (prop in props) {
+      for (const prop in props) {
         if (Object.prototype.hasOwnProperty.call(props, prop)) {
           obj[prop] = props[prop]
         }
@@ -15,9 +14,9 @@ var Util = {
     return obj
   },
 
-  replace: function (str, values) {
-    var name = null
-    var value = null
+  replace: (str, values) => {
+    let name = null
+    let value = null
 
     for (name in values) {
       if (Object.prototype.hasOwnProperty.call(values, name)) {
@@ -28,13 +27,11 @@ var Util = {
     return str
   },
 
-  isArray: function (obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]'
-  },
+  isArray: obj => Object.prototype.toString.call(obj) === '[object Array]',
 
-  request: function (config, callback, verbose, verboseMode) {
-    var body = JSON.stringify(config.data)
-    var requestConfig = {
+  request: (config, callback, verbose, verboseMode) => {
+    const body = JSON.stringify(config.data)
+    const requestConfig = {
       method: config.method,
       host: config.host,
       path: config.path,
@@ -45,15 +42,15 @@ var Util = {
       }
     }
 
-    var codeRequestSuccess = 200
-    var request = https.request(requestConfig, function (response) {
-      var result = ''
+    const codeRequestSuccess = 200
+    const request = https.request(requestConfig, (response) => {
+      let result = ''
       if (callback) {
-        response.on('data', function (chunk) {
+        response.on('data', (chunk) => {
           result += chunk
         })
-        .on('end', function () {
-          var res = null
+        .on('end', () => {
+          let res = null
           try {
             res = JSON.parse(result)
           } catch (e) {
@@ -69,7 +66,7 @@ var Util = {
         })
       }
     })
-    .on('error', function (err) {
+    .on('error', (err) => {
       if (callback) {
         callback('Could not send request: ' + err.message)
       } else if (verbose) {
@@ -81,7 +78,7 @@ var Util = {
     request.end()
   },
 
-  formatArray: function (arr) {
+  formatArray: (arr) => {
     if (!Util.isArray(arr) || Util.isArray(arr) && arr.length === 0) {
       throw new Error('Empty array or not an array')
     }

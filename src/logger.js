@@ -1,11 +1,11 @@
 'use strict'
 
-var colors    = require('colors/safe')
-var moduleTag = colors.gray('JSUnitSaucelabs - ')
-var infoTag   = colors.cyan('[Info] ')
-var warnTag   = colors.yellow('[Warn] ')
-var debugTag  = colors.green('[Debug] ')
-var errorTag  = colors.red('[Error] ')
+const colors    = require('colors/safe')
+const moduleTag = colors.gray('JSUnitSaucelabs - ')
+const infoTag   = colors.cyan('[Info] ')
+const warnTag   = colors.yellow('[Warn] ')
+const debugTag  = colors.green('[Debug] ')
+const errorTag  = colors.red('[Error] ')
 
 function Logger(enabled, mode) {
   this.enabled = enabled

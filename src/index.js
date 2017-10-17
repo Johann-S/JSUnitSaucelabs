@@ -1,11 +1,11 @@
 'use strict'
 
-var emitter     = require('events').EventEmitter
-var SauceTunnel = require('sauce-tunnel')
-var Util        = require('./util')
-var Logger      = require('./logger')
+const emitter     = require('events').EventEmitter
+const SauceTunnel = require('sauce-tunnel')
+const Util        = require('./util')
+const Logger      = require('./logger')
 
-var DEFAULTS = {
+const DEFAULTS = {
   username:    null,
   password:    null,
   tunneled:    true,
@@ -16,7 +16,7 @@ var DEFAULTS = {
   base:        '/rest/v1/'
 }
 
-var EVENTS = {
+const EVENTS = {
   TUNNEL_CREATED: 'tunnelCreated'
 }
 
@@ -43,15 +43,14 @@ JSUnitSaucelabs.prototype.initTunnel = function () {
     // eslint-disable-next-line
     this.identifier = Math.floor((new Date()).getTime() / 1000 - 1230768000).toString()
     this.tunnel     = new SauceTunnel(this.options.username, this.options.password, this.identifier, true, [])
-    var that        = this
 
     this.logger.debug('Tunnel identifier : ' + this.identifier)
 
-    this.tunnel.start(function (tunnelStatus) {
+    this.tunnel.start((tunnelStatus) => {
       if (tunnelStatus) {
-        that.tunnelStarted = true
-        that.logger.info('Tunnel created to Sauce Labs\n')
-        that.emit(EVENTS.TUNNEL_CREATED)
+        this.tunnelStarted = true
+        this.logger.info('Tunnel created to Sauce Labs\n')
+        this.emit(EVENTS.TUNNEL_CREATED)
       } else {
         throw new Error('Could not create tunnel to Sauce Labs')
       }
@@ -66,8 +65,8 @@ JSUnitSaucelabs.prototype.start = function (platforms, url, framework, callback)
   }
   platforms = Util.formatArray(platforms)
 
-  var path = this.options.base + Util.replace(':username/js-tests', Util.extend({}, this.options))
-  var requestParams = {
+  const path = this.options.base + Util.replace(':username/js-tests', Util.extend({}, this.options))
+  const requestParams = {
     method: 'POST',
     host: this.options.hostname,
     path: path,
@@ -101,7 +100,7 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
   }
 
   this.logger.debug('getStatus on : "' + taskIds.join(',') + '"')
-  var path = this.options.base + Util.replace(':username/js-tests/status', Util.extend({}, this.options))
+  const path = this.options.base + Util.replace(':username/js-tests/status', Util.extend({}, this.options))
   Util.request({
     method: 'POST',
     host: this.options.hostname,
@@ -115,9 +114,8 @@ JSUnitSaucelabs.prototype.getStatus = function (taskIds, callback) {
 
 JSUnitSaucelabs.prototype.stop = function () {
   if (this.tunnel && this.tunnelStarted) {
-    var that = this
-    this.tunnel.stop(function () {
-      that.logger.info('Tunnel closed')
+    this.tunnel.stop(() => {
+      this.logger.info('Tunnel closed')
     })
   }
 }
