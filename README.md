@@ -7,6 +7,12 @@
 
 Allows you to run your unit tests through Sauce Labs API without Grunt.
 
+## Used by
+
+If you want to add your name here do not hesitate to open a PR :wink:
+
+- [Bootstrap](https://github.com/twbs/bootstrap)
+
 ## Install
 
 ```shell
