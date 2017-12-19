@@ -47,7 +47,7 @@ test('Allow to create tunnel on SauceLabs', function (done) {
   }
 
   // only run this test on Travis
-  if (typeof process.env.TRAVIS_JOB_ID === 'undefined') {
+  if (typeof process.env.SAUCE_USERNAME === 'undefined') {
     successFunction()
     return
   }
