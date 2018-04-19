@@ -29,7 +29,7 @@
     "nodejs"
   ],
   "scripts": {
-    "test": "eslint src/*.js && jest"
+    "test": "eslint . && jest"
   },
   "dependencies": {
     "colors": "^1.2.1",

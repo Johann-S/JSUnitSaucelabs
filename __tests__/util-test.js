@@ -1,7 +1,9 @@
+/* eslint-env jest */
+
 const Util = require('../src/util')
 
 test('Util.formatArray should format correctly input array', () => {
-  let testArr1 = ['internet explorer', 'Windows 7', 'ie9'];
+  let testArr1 = ['internet explorer', 'Windows 7', 'ie9']
   testArr1 = Util.formatArray(testArr1)
 
   expect(testArr1).toHaveLength(1)
@@ -27,7 +29,7 @@ test('Util.replace should replace sub string', () => {
   const str = 'http://lalala/:username/'
   const expectedStr = 'http://lalala/johann-s/'
 
-  const result = Util.replace('http://lalala/:username/', {
+  const result = Util.replace(str, {
     username: 'johann-s'
   })
 
