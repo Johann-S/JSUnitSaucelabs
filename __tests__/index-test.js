@@ -1,4 +1,5 @@
 const JSUnitSaucelabs = require('../src/index')
+const timeout = 50000
 
 test('allow to pass object in constructor', function () {
   var jsUnitSL = new JSUnitSaucelabs({
@@ -44,4 +45,4 @@ test('Allow to create tunnel on SauceLabs', function (done) {
     jsUnitSL.stop()
   })
   jsUnitSL.initTunnel()
-}, 25000)
+}, timeout)
