@@ -32,11 +32,11 @@
     "test": "eslint src/*.js && jest"
   },
   "dependencies": {
-    "colors": "^1.1.2",
+    "colors": "^1.2.1",
     "sauce-tunnel": "^2.5.0"
   },
   "devDependencies": {
-    "eslint": "^4.13.1",
-    "jest": "^22.0.1"
+    "eslint": "^4.19.1",
+    "jest": "^22.4.3"
   }
 }
