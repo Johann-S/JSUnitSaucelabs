@@ -19,7 +19,9 @@
   "files": [
     "src/index.js",
     "src/util.js",
-    "src/logger.js"
+    "src/logger.js",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "saucelabs",
