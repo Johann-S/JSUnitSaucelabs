@@ -69,7 +69,8 @@ const Util = {
     .on('error', (err) => {
       if (callback) {
         callback('Could not send request: ' + err.message)
-      } else if (verbose) {
+      }
+      if (verbose) {
         Util.logWarn('Could not send request: ' + err.message, verboseMode)
       }
     })
