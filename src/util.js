@@ -3,8 +3,8 @@
 const https = require('https')
 
 const Util = {
-  extend: function (obj) {
-    Array.prototype.slice.call(arguments, 1).forEach(function (props) {
+  extend(obj) {
+    Array.prototype.slice.call(arguments, 1).forEach(props => {
       for (const prop in props) {
         if (Object.prototype.hasOwnProperty.call(props, prop)) {
           obj[prop] = props[prop]
@@ -21,7 +21,7 @@ const Util = {
     for (name in values) {
       if (Object.prototype.hasOwnProperty.call(values, name)) {
         value = values[name]
-        str = str.replace(new RegExp(':' + name, 'g'), value)
+        str = str.replace(new RegExp(`:${name}`, 'g'), value)
       }
     }
     return str
@@ -54,7 +54,7 @@ const Util = {
           try {
             res = JSON.parse(result)
           } catch (e) {
-            callback('Could not parse response: ' + result)
+            callback(`Could not parse response: ${result}`)
             return
           }
 
@@ -68,10 +68,10 @@ const Util = {
     })
     .on('error', (err) => {
       if (callback) {
-        callback('Could not send request: ' + err.message)
+        callback(`Could not send request: ${err.message}`)
       }
       if (verbose) {
-        Util.logWarn('Could not send request: ' + err.message, verboseMode)
+        Util.logWarn(`Could not send request: ${err.message}`, verboseMode)
       }
     })
 
