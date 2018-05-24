@@ -27,7 +27,7 @@
     "saucelabs",
     "saucelabs-api",
     "unit-testing",
-    "javasript",
+    "javascript",
     "nodejs"
   ],
   "scripts": {
